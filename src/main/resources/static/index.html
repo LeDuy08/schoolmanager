@@ -80,14 +80,14 @@ const searchBox = document.getElementById("searchBox");
 
 document.addEventListener("DOMContentLoaded", loadStudents);
 
-// 📥 LOAD ALL
+// LOAD ALL
 function loadStudents(){
     fetch(API)
         .then(res => res.json())
         .then(renderTable);
 }
 
-// 🔍 SMART SEARCH
+// SEARCH
 function smartSearch(){
     const key = searchBox.value.trim();
     if(key === "") return loadStudents();
@@ -97,7 +97,7 @@ function smartSearch(){
         .then(renderTable);
 }
 
-// 🖥 RENDER TABLE
+// RENDER TABLE
 function renderTable(data){
     table.innerHTML = "";
     data.forEach(s => {
@@ -112,6 +112,7 @@ function renderTable(data){
                 <td>${s.address || ""}</td>
                 <td>${s.studentClass || ""}</td>
                 <td>
+                    <button class="btn btn-success btn-sm" onclick="showAddForm()">Thêm</button>
                     <button class="btn btn-warning btn-sm" onclick='editStudent(${JSON.stringify(s)})'>Sửa</button>
                     <button class="btn btn-danger btn-sm" onclick="deleteStudent(${s.id})">Xóa</button>
                 </td>
@@ -119,11 +120,19 @@ function renderTable(data){
     });
 }
 
-// ➕ SAVE / UPDATE
+// SHOW FORM ADD
+function showAddForm(){
+    form.reset();
+    studentId.value = "";
+    name.focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// SAVE / UPDATE
 form.addEventListener("submit", e => {
     e.preventDefault();
 
-    const id = document.getElementById("studentId").value;
+    const id = studentId.value;
 
     const student = {
         name: name.value,
@@ -146,7 +155,7 @@ form.addEventListener("submit", e => {
     });
 });
 
-// ✏ EDIT
+// EDIT
 function editStudent(s){
     studentId.value = s.id;
     name.value = s.name;
@@ -154,9 +163,10 @@ function editStudent(s){
     birthDate.value = s.birthDate;
     address.value = s.address;
     studentClass.value = s.studentClass;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ❌ DELETE
+// DELETE
 function deleteStudent(id){
     if(confirm("Xóa sinh viên này?")){
         fetch(API + "/" + id, {method:"DELETE"})
