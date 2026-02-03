@@ -20,26 +20,28 @@ public class Student {
     @Column(nullable = false)
     private String name;
 
-    // 🔽 THÊM MỚI
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
     private String address;
 
-    @Column(name = "class")
+    @Column(name = "student_class")
     private String studentClass;
-
-    @Column(nullable = false, unique = true)
-    private String email;
 
     public Student() {}
 
-    // ===== GET SET =====
+    // GET SET
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
     public LocalDate getBirthDate() { return birthDate; }
     public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
@@ -49,7 +51,4 @@ public class Student {
 
     public String getStudentClass() { return studentClass; }
     public void setStudentClass(String studentClass) { this.studentClass = studentClass; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
 }
